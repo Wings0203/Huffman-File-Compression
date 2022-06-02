@@ -23,7 +23,7 @@ typedef union bit2char {
 }BIT2CHAR;
 
 int bit2value(BIT2CHAR test) {
-	int temp = 0; // Число в 2 СС
+	int temp = 0; // Р§РёСЃР»Рѕ РІ 2 РЎРЎ
 	temp += test.mbit.b1 * pow(10, 7);
 	temp += test.mbit.b2 * pow(10, 6);
 	temp += test.mbit.b3 * pow(10, 5);
@@ -32,7 +32,7 @@ int bit2value(BIT2CHAR test) {
 	temp += test.mbit.b6 * pow(10, 2);
 	temp += test.mbit.b7 * pow(10, 1);
 	temp += test.mbit.b8 * pow(10, 0);
-	int res = 0; // Число в 10 СС
+	int res = 0; // Р§РёСЃР»Рѕ РІ 10 РЎРЎ
 	int i = 0;
 	while (temp) {
 		res += (temp % 10) * 2 + pow(10, i);
@@ -66,12 +66,17 @@ int main() {
 			phead = Add2List(phead, pnew);
 		}
 	}
-	NODE* listphead = phead;
+	//NODE* listphead = phead;
 	PrintList(phead);
-	//phead = MakeTreeFromList(phead); // Tree.
-	phead = MakeTree(phead);
-	printf("%d", phead->freq);
-	printf("%d", phead->left->freq);
+	printf("\n\n");
+	
+	NODE* savephead = nullptr;
+	savephead = CopyList(phead, savephead);
+	PrintList(savephead);
+	
+	//phead = MakeTree(phead);
+	//printf("%d", phead->freq);
+	//printf("%d", phead->left->freq);
 	//PrintTree(phead);
 
 	//char code[CODE_SIZE] = { 0 };
@@ -111,8 +116,8 @@ int main() {
 
 	////string str;
 	//int count = strlen(bitstring) / BIT8;
-	//int tail = strlen(bitstring) % BIT8; //остаток из нулей
-	//int len = count + 1;           //длина результирующей строки
+	//int tail = strlen(bitstring) % BIT8; //РѕСЃС‚Р°С‚РѕРє РёР· РЅСѓР»РµР№
+	//int len = count + 1;           //РґР»РёРЅР° СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РµР№ СЃС‚СЂРѕРєРё
 	//BIT2CHAR symb;
 	//char* bits = (char*)malloc(8 * sizeof(char));
 	//char* res = (char*)malloc(len * sizeof(char));
@@ -137,16 +142,16 @@ int main() {
 	//	for (int i = 0; i < tail; ++i)
 	//}
 
-	//BIT2CHAR test;
-	//test.mbit.b1 = 0;
-	//test.mbit.b2 = 0;
-	//test.mbit.b3 = 0;
-	//test.mbit.b4 = 1;
-	//test.mbit.b5 = 0;
-	//test.mbit.b6 = 0;
-	//test.mbit.b7 = 0;
-	//test.mbit.b8 = 0;
-	//test.value = bit2value(test);
-	//printf("yes %c == %c", test.symb, (char)test.value);
+	/*BIT2CHAR test;
+	test.mbit.b1 = 0;
+	test.mbit.b2 = 0;
+	test.mbit.b3 = 0;
+	test.mbit.b4 = 1;
+	test.mbit.b5 = 0;
+	test.mbit.b6 = 0;
+	test.mbit.b7 = 0;
+	test.mbit.b8 = 0;
+	test.value = bit2value(test);
+	printf("yes %c == %c", test.symb, (char)test.value);*/
 	return 0;
 }
