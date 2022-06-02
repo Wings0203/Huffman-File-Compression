@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <iostream>
 
 #define CODE_SIZE 256
 
@@ -6,7 +8,7 @@ typedef struct node {
 	unsigned char symb = '0';		//Храним символ
 	unsigned char isSymb = '0';	//Храним признак символа
 	unsigned int freq = 0;		//Частота встречаемости узла
-	char code[CODE_SIZE];		//Битовый код символа
+	string code;	//Битовый код символа
 	int level;		//Уровень глубины дерева
 	struct node* left = nullptr;
 	struct node* right = nullptr;
@@ -26,4 +28,4 @@ NODE* CopyList(NODE* phead, NODE* savephead);
 NODE* MakeNodeFromNode(NODE* left, NODE* right);
 NODE* MakeTreeFromList(NODE* head);
 NODE* MakeTree(NODE* phead);
-void MakeCodes(NODE* head, char code[], int level);
+void MakeCodes(NODE* head, string code, int level);
