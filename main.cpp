@@ -8,8 +8,7 @@ using namespace std;
 #pragma warning(disable : 4996)
 
 typedef union bit2char {
-	char symb;
-	int value;
+	unsigned char symb;
 	struct bit {
 		unsigned b1 : 1;
 		unsigned b2 : 1;
@@ -69,89 +68,101 @@ int main() {
 	//NODE* listphead = phead;
 	PrintList(phead);
 	printf("\n\n");
-	
+
 	NODE* savephead = nullptr;
 	savephead = CopyList(phead, savephead);
-	PrintList(savephead);
+	//PrintList(savephead);
 	
-	//phead = MakeTree(phead);
-	//printf("%d", phead->freq);
-	//printf("%d", phead->left->freq);
-	//PrintTree(phead);
-
-	//char code[CODE_SIZE] = { 0 };
-	//MakeCodes(phead, code, 0);
-	//fseek(fr, 0, SEEK_SET);
-	//char* bitstring = (char*)malloc(1000 * length * sizeof(char));
-	//char chh;
-	//bool first = 1;
-	//while ((chh = fgetc(fr)) != EOF)
-	//{
-	//	//printf("%c ", chh);
-	//	listphead = savephead;
-	//	while (listphead)
-	//	{
-	//		if (listphead->symb == chh)
-	//		{
-	//			if (first)
-	//			{
-	//				strcpy(bitstring, listphead->code);
-	//				//printf("%c ", listphead->symb);
-	//				first = 0;
-	//				printf(listphead->code);
-	//				printf("\n");
-	//				break;
-	//			}
-	//			strcat(bitstring, listphead->code);
-	//			//printf("%c ", listphead->symb);
-	//			printf(listphead->code);
-	//			printf("\n");
-	//			break;
-	//		}
-	//		listphead = listphead->next;
-	//	}
-	//}
-	////printf(bitstring);
+	phead = MakeTreeFromList(phead); // Tree.
+	char code[CODE_SIZE] = {0};
+	MakeCodes(phead, code, 0);
+	fseek(fr, 0, SEEK_SET);
+	char* bitstring = (char*)malloc(1000*length*sizeof(char));
+	char chh;
+	bool first = 1;
+	NODE* listphead;
+	while ((chh = fgetc(fr)) != EOF)
+	{
+		//printf("%c ", chh);
+		listphead = savephead;
+		while (listphead)
+		{
+			if (listphead->symb == chh)
+			{
+				if (first)
+				{
+					strcpy(bitstring, listphead->code);
+					first = 0;
+					//printf(listphead->code);
+					//printf("\n");
+					break;
+				}
+				strcat(bitstring, listphead->code);
+				//printf("%c ", listphead->symb);
+				//printf(listphead->code);
+				//printf("\n");
+				break;
+			}
+			printf(bitstring);
+			printf("\n");
+			listphead = listphead->next;
+		}
+	}
+	//printf(bitstring);
+	fclose(fr);
+	//string str;
+	int count = strlen(bitstring) / BIT8;
+	printf("%d", strlen(bitstring));
+	int tail = strlen(bitstring) % BIT8; 
+	//printf("%d", tail);//остаток из нулей
+	int len = count + 1;           //длина результирующей строки
+	BIT2CHAR symb;
+	char* bits = (char*)malloc(8 * sizeof(char));
+	char* res = (char*)malloc(len * sizeof(char));
+	FILE* fw = fopen("from_h", "wb");
+	for (int i = 0; i < count; ++i)
+	{
+		symb.mbit.b1 = (unsigned int)bitstring[i * BIT8 + 0];
+		printf("%d", symb.mbit.b1);
+		symb.mbit.b2 = (unsigned int)bitstring[i * BIT8 + 1];
+		symb.mbit.b3 = (unsigned int)bitstring[i * BIT8 + 2];
+		symb.mbit.b4 = (unsigned int)bitstring[i * BIT8 + 3];
+		symb.mbit.b5 = (unsigned int)bitstring[i * BIT8 + 4];
+		symb.mbit.b6 = (unsigned int)bitstring[i * BIT8 + 5];
+		symb.mbit.b7 = (unsigned int)bitstring[i * BIT8 + 6];
+		symb.mbit.b8 = (unsigned int)bitstring[i * BIT8 + 7];
+		printf("%c", symb.symb);
+		fputc(symb.symb, fw);
+	}
+	//printf(res);
+	printf("\n");
+	// запись хвоста с 0
+	char arr[8];
+	if (tail != 0)
+	{
+		for (int i = 0; i < (8 - tail); i++)
+		{
+			arr[i] = '0';
+			//printf("%c", arr[i]);
+		}
+		for (int i = (8 - tail); i < 8; i++)
+		{
+			arr[i] = bitstring[count * BIT8 + i - 8 + tail];
+			//printf("%c", arr[i]);
+		}
+		
+	}
+	//printf("\n");
+	symb.mbit.b1 = arr[0];
+	symb.mbit.b2 = arr[1];
+	symb.mbit.b3 = arr[2];
+	symb.mbit.b4 = arr[3];
+	symb.mbit.b5 = arr[4];
+	symb.mbit.b6 = arr[5];
+	symb.mbit.b7 = arr[6];
+	symb.mbit.b8 = arr[7];
+	fputc(symb.symb, fw);
 	//fclose(fr);
-
-	////string str;
-	//int count = strlen(bitstring) / BIT8;
-	//int tail = strlen(bitstring) % BIT8; //остаток из нулей
-	//int len = count + 1;           //длина результирующей строки
-	//BIT2CHAR symb;
-	//char* bits = (char*)malloc(8 * sizeof(char));
-	//char* res = (char*)malloc(len * sizeof(char));
-	//for (int i = 0; i < count; ++i)
-	//{
-	//	symb.mbit.b1 = bitstring[i * BIT8 + 0];
-	//	symb.mbit.b2 = bitstring[i * BIT8 + 1];
-	//	symb.mbit.b3 = bitstring[i * BIT8 + 2];
-	//	symb.mbit.b4 = bitstring[i * BIT8 + 3];
-	//	symb.mbit.b5 = bitstring[i * BIT8 + 4];
-	//	symb.mbit.b6 = bitstring[i * BIT8 + 5];
-	//	symb.mbit.b7 = bitstring[i * BIT8 + 6];
-	//	symb.mbit.b8 = bitstring[i * BIT8 + 7];
-	//	res[i] = bit2value(symb);
-	//}
-	//if (tail != 0)
-	//{
-	//	for (int i = 0; i < tail; ++i)
-	//	{
-	//		symb.mbit.
-	//	}
-	//	for (int i = 0; i < tail; ++i)
-	//}
-
-	/*BIT2CHAR test;
-	test.mbit.b1 = 0;
-	test.mbit.b2 = 0;
-	test.mbit.b3 = 0;
-	test.mbit.b4 = 1;
-	test.mbit.b5 = 0;
-	test.mbit.b6 = 0;
-	test.mbit.b7 = 0;
-	test.mbit.b8 = 0;
-	test.value = bit2value(test);
-	printf("yes %c == %c", test.symb, (char)test.value);*/
+	fclose(fw);
 	return 0;
 }
