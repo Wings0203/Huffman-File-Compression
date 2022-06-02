@@ -3,11 +3,11 @@
 #define CODE_SIZE 256
 
 typedef struct node {
-	unsigned char symb = '0';		//Храним символ
-	unsigned char isSymb = '0';	//Храним признак символа
-	unsigned int freq = 0;		//Частота встречаемости узла
-	char code[CODE_SIZE];		//Битовый код символа
-	int level;		//Уровень глубины дерева
+	unsigned char symb = '0';		//РҐСЂР°РЅРёРј СЃРёРјРІРѕР»
+	unsigned char isSymb = '0';	//РҐСЂР°РЅРёРј РїСЂРёР·РЅР°Рє СЃРёРјРІРѕР»Р°
+	unsigned int freq = 0;		//Р§Р°СЃС‚РѕС‚Р° РІСЃС‚СЂРµС‡Р°РµРјРѕСЃС‚Рё СѓР·Р»Р°
+	char code[CODE_SIZE];		//Р‘РёС‚РѕРІС‹Р№ РєРѕРґ СЃРёРјРІРѕР»Р°
+	int level;		//РЈСЂРѕРІРµРЅСЊ РіР»СѓР±РёРЅС‹ РґРµСЂРµРІР°
 	struct node* left = nullptr;
 	struct node* right = nullptr;
 	struct node* next = nullptr;
@@ -20,6 +20,7 @@ NODE* Add2List(NODE* head, NODE* newnode);
 void PrintList(NODE* phead);
 NODE* DeleteList(NODE* phead);
 void PrintTree(const NODE* root);
+NODE* CopyList(NODE* phead, NODE* savephead);
 
 // Special functions
 NODE* MakeNodeFromNode(NODE* left, NODE* right);
