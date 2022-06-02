@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
 using namespace std;
 #define _CRT_SECURE_NO_WARNINGS
 #define BIT8 8
@@ -72,12 +73,14 @@ int main() {
 	NODE* savephead = nullptr;
 	savephead = CopyList(phead, savephead);
 	//PrintList(savephead);
-	
-	phead = MakeTreeFromList(phead); // Tree.
-	char code[CODE_SIZE] = {0};
+
+	phead = MakeTree(phead); // Tree.
+	//char code[CODE_SIZE] = { 0 };
+	string code;
 	MakeCodes(phead, code, 0);
 	fseek(fr, 0, SEEK_SET);
-	char* bitstring = (char*)malloc(1000*length*sizeof(char));
+	//char* bitstring = (char*)malloc(1000 * length * sizeof(char));
+	string bitstring;
 	char chh;
 	bool first = 1;
 	NODE* listphead;
@@ -91,19 +94,22 @@ int main() {
 			{
 				if (first)
 				{
-					strcpy(bitstring, listphead->code);
+					//strcpy(bitstring, listphead->code);
+					bitstring = listphead->code;
 					first = 0;
 					//printf(listphead->code);
 					//printf("\n");
 					break;
 				}
-				strcat(bitstring, listphead->code);
+				//strcat(bitstring, listphead->code);
+				bitstring += listphead->code;
 				//printf("%c ", listphead->symb);
 				//printf(listphead->code);
 				//printf("\n");
 				break;
 			}
-			printf(bitstring);
+			//printf(bitstring);
+			cout << bitstring;
 			printf("\n");
 			listphead = listphead->next;
 		}
@@ -111,14 +117,14 @@ int main() {
 	//printf(bitstring);
 	fclose(fr);
 	//string str;
-	int count = strlen(bitstring) / BIT8;
-	printf("%d", strlen(bitstring));
-	int tail = strlen(bitstring) % BIT8; 
+	int count = size(bitstring) / BIT8;
+	printf("%d", size(bitstring));
+	int tail = size(bitstring) % BIT8;
 	//printf("%d", tail);//остаток из нулей
 	int len = count + 1;           //длина результирующей строки
 	BIT2CHAR symb;
-	char* bits = (char*)malloc(8 * sizeof(char));
-	char* res = (char*)malloc(len * sizeof(char));
+	/*char* bits = (char*)malloc(8 * sizeof(char));
+	char* res = (char*)malloc(len * sizeof(char));*/
 	FILE* fw = fopen("from_h", "wb");
 	for (int i = 0; i < count; ++i)
 	{
@@ -150,7 +156,7 @@ int main() {
 			arr[i] = bitstring[count * BIT8 + i - 8 + tail];
 			//printf("%c", arr[i]);
 		}
-		
+
 	}
 	//printf("\n");
 	symb.mbit.b1 = arr[0];
