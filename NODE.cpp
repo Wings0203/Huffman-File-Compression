@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable : 4996)
+using namespace std;
 
 // Standart functions
 NODE* CreateNode(unsigned char symb, unsigned char isSymb, unsigned int freq) {
@@ -127,7 +129,7 @@ NODE* MakeTree(NODE* phead) {
 	}
 	return phead;
 }
-void MakeCodes(node* head, char* code, int level)
+void MakeCodes(node* head, string code, int level)
 {
 	if (head)
 	{
@@ -146,6 +148,6 @@ void MakeCodes(node* head, char* code, int level)
 			code[level] = 0;
 		}
 		else
-			strcpy(head->code, code);
+			head->code = code; //strcpy(head->code, code);
 	}
 }
