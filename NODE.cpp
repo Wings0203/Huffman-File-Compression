@@ -72,6 +72,15 @@ void PrintTree(const node* phead) {
 		PrintTree(phead->right);
 	}*/
 }
+NODE* CopyList(NODE* phead, NODE* savephead) {
+	NODE* pnew = nullptr;
+	while (phead) {
+		pnew = CreateNode(phead->symb, phead->isSymb, phead->freq);
+		savephead = Add2List(savephead, pnew);
+		phead = phead->next;
+	}
+	return savephead;
+}
 
 // Special functions
 NODE* MakeNodeFromNode(NODE* left, NODE* right) {
@@ -103,8 +112,8 @@ NODE* MakeTree(NODE* phead) {
 		NODE* right = phead->next;
 		if (res) {
 			res->freq = left->freq + right->freq;
-			res->isSymb = 0;
-			res->symb = 0;
+			res->isSymb = '0';
+			res->symb = '0';
 			res->left = left;
 			res->right = right;
 			res->next = nullptr;
@@ -113,7 +122,7 @@ NODE* MakeTree(NODE* phead) {
 		left->next = nullptr;
 		right->next = nullptr;
 		phead = Add2List(phead, res);
-		delete res;
+		free(res);
 		res = nullptr;
 	}
 	return phead;
