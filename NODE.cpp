@@ -17,7 +17,6 @@ NODE* CreateNode(unsigned char symb, unsigned char isSymb, unsigned int freq) {
     }
     return res;
 }
-
 NODE* Add2List(NODE* head, NODE* newnode) {
     NODE* tmp = newnode;
     if (!newnode) {
@@ -106,8 +105,6 @@ NODE* MakeTree(NODE* phead) {
     }
     return phead;
 }
-
-
 void MakeCodes(node* phead)
 {
 //    if (phead->left) {
@@ -118,7 +115,7 @@ void MakeCodes(node* phead)
 //    }
     if (phead->left)
     {
-       // phead->left->code + "0";
+        // phead->left->code + "0";
         *phead->left->code = *phead->code + "0";
         MakeCodes(phead->left);
     }
@@ -152,3 +149,11 @@ void MakeCodes(node* head, string code, int level)
 			head->code = code; //strcpy(head->code, code);
 	}
 }*/
+string Symb_code(const NODE* root, char element) {
+    if (root) {
+        Symb_code(root->left, element);
+        if (root->isSymb && root->symb == element)
+            return *root->code;
+        Symb_code(root->right, element);
+    }
+}
