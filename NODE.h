@@ -33,4 +33,5 @@ NODE* MakeTreeFromList(NODE* head);
 NODE* MakeTree(NODE* phead);
 //void MakeCodes(NODE* head, string code, int level);
 void MakeCodes(NODE* phead);
-string Symb_code(const NODE* root, char element);
+string* Symb_code(const NODE* root, char element);
+char Code_symb(NODE* root, string code);
