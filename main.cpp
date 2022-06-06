@@ -68,22 +68,23 @@ int main() {
         }
     }
     //NODE* listphead = phead;
-    PrintList(phead);
-    //cout << 1;
+    //PrintList(phead);
 
     printf("\n\n");
 
     NODE* savephead = nullptr;
-    savephead = CopyList(phead, savephead);
+    //savephead = CopyList(phead, savephead);
     //PrintList(savephead);
     phead = MakeTree(phead); // Tree.
     //printf("%d    ", phead->right->freq);
     //char code[CODE_SIZE] = { 0 };
     //string code;
-    PrintTree(phead);
-    MakeCodes(phead);
 
-    cout << "ok";
+    MakeCodes(phead);
+    //PrintTree(phead);
+    //cout << "ok";
+
+
     fseek(fr, 0, SEEK_SET);
     //char* bitstring = (char*)malloc(1000 * length * sizeof(char));
     string bitstring = string();
@@ -91,31 +92,16 @@ int main() {
     NODE* listphead;
     while ((chh = fgetc(fr)) != EOF)
     {
-        //printf("%c ", chh);
-        listphead = savephead;
-        while (listphead)
-        {
-            if (listphead->symb == chh)
-            {
-                //strcat(bitstring, listphead->code);
-                cout << *listphead->code << "\n";
-                bitstring += *listphead->code;
-                //cout << bitstring << '\n';
-                //printf("%c ", listphead->symb);
-                //printf(listphead->code);
-                //printf("\n");
-                break;
-            }
-            //printf(bitstring);
-
-            listphead = listphead->next;
-        }
+            bitstring += *Symb_code(phead, chh);
     }
-    cout << "\n" << bitstring ;
+    //cout << "\n" << bitstring << "\n";
     fclose(fr);
     //string str;
+
+
     int count = bitstring.length() / BIT8;
-    printf("%d", bitstring.length());
+    cout << bitstring.length()<< "\n";
+    //printf("%d", bitstring.length());
     int tail = bitstring.length() % BIT8;
     //printf("%d", tail);
     int len = count + 1;
@@ -126,7 +112,6 @@ int main() {
     for (int i = 0; i < count; ++i)
     {
         symb.mbit.b1 = (unsigned int)bitstring[i * BIT8 + 0];
-        printf("%d", symb.mbit.b1);
         symb.mbit.b2 = (unsigned int)bitstring[i * BIT8 + 1];
         symb.mbit.b3 = (unsigned int)bitstring[i * BIT8 + 2];
         symb.mbit.b4 = (unsigned int)bitstring[i * BIT8 + 3];
@@ -134,11 +119,11 @@ int main() {
         symb.mbit.b6 = (unsigned int)bitstring[i * BIT8 + 5];
         symb.mbit.b7 = (unsigned int)bitstring[i * BIT8 + 6];
         symb.mbit.b8 = (unsigned int)bitstring[i * BIT8 + 7];
-        printf("%c", symb.symb);
+       // printf("%c", symb.symb);
         fputc(symb.symb, fw);
     }
     //printf(res);
-    printf("\n");
+
     char arr[8];
     if (tail != 0)
     {
@@ -164,6 +149,8 @@ int main() {
     symb.mbit.b7 = arr[6];
     symb.mbit.b8 = arr[7];
     fputc(symb.symb, fw);
+    //printf("%c", symb.symb);
+    printf("\n");
     //fclose(fr);
     fclose(fw);
 
@@ -181,40 +168,41 @@ int main() {
     while ((chh1 = fgetc(fr1)) != EOF)
     {
         symb1.symb = chh1;
-        code_new.push_back((char)symb1.mbit.b1);
-        code_new.push_back((char)symb1.mbit.b2);
-        code_new.push_back((char)symb1.mbit.b3);
-        code_new.push_back((char)symb1.mbit.b4);
-        code_new.push_back((char)symb1.mbit.b5);
-        code_new.push_back((char)symb1.mbit.b6);
-        code_new.push_back((char)symb1.mbit.b7);
-        code_new.push_back((char)symb1.mbit.b8);
+        code_new.push_back((char)(((int)'0')+symb1.mbit.b1));
+        code_new.push_back((char)(((int)'0')+symb1.mbit.b2));
+        code_new.push_back((char)(((int)'0')+symb1.mbit.b3));
+        code_new.push_back((char)(((int)'0')+symb1.mbit.b4));
+        code_new.push_back((char)(((int)'0')+symb1.mbit.b5));
+        code_new.push_back((char)(((int)'0')+symb1.mbit.b6));
+        code_new.push_back((char)(((int)'0')+symb1.mbit.b7));
+        code_new.push_back((char)(((int)'0')+symb1.mbit.b8));
     }
+    //cout << code_new << "\n";
     int i = 0;
     int length1 = code_new.length();
+    cout << length1;
     string cd;
+    char symbol;
+    int counti;
     while (i < length1)
     {
         if ((tail != 0) && (i >= (length1 - 8)) && (i < (length1 - tail)))
         {
-            cd = string();
             i++;
+            //cout << 1;
             continue;
         }
         cd.push_back(code_new[i]);
-        listphead = savephead;
-        while (listphead)
+        if (symbol = Code_symb(phead, cd))
         {
-            if (*listphead->code == cd)
-            {
-                fputc(listphead->symb, fw1);
-                cd = string();
-                break;
-            }
-            listphead = listphead->next;
+           // cout << 1;
+           counti++;
+           fputc(symbol, fw1);
+           cd = string();
         }
         i++;
     }
+    cout <<' ' << counti;
     fclose(fr1);
     fclose(fw1);
     return 0;
