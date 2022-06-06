@@ -64,7 +64,7 @@ void PrintTree(const node* phead) {
     //printf("%d\n", phead->freq);
     //PrintTree(phead->right);
     if (phead->isSymb) {
-        cout << phead->symb << " " ;
+        cout << phead->symb << " - "<< *phead->code<< "\n";
         //printf("%c %d\n", phead->symb, phead->freq);
     }
     else {
@@ -128,7 +128,6 @@ void MakeCodes(node* phead)
 /*
 void MakeCodes(node* head, string code, int level)
 {
-
 	if (head)
 	{
 		if (!head->isSymb)
@@ -149,11 +148,41 @@ void MakeCodes(node* head, string code, int level)
 			head->code = code; //strcpy(head->code, code);
 	}
 }*/
-string Symb_code(const NODE* root, char element) {
+string* Symb_code(const NODE* root, char element) {
     if (root) {
-        Symb_code(root->left, element);
         if (root->isSymb && root->symb == element)
-            return *root->code;
-        Symb_code(root->right, element);
+            return root->code;
+        string* el = new string;
+        el = Symb_code(root->left, element);
+        if (el!=NULL)
+            return el;
+        el =Symb_code(root->right, element);
+        if (el!=NULL)
+            return el;
     }
+    return NULL;
+}
+
+char Code_symb(NODE* root, string code)
+{
+    NODE* current = new NODE;
+    current = root;
+    int i = 0;
+   // cout << code;
+    while (i < code.length())
+    {
+        if (code[i] == '1')
+        {
+            current = current->right;
+        }
+        if (code[i] == '0')
+        {
+            current = current->left;
+        }
+        i++;
+    }
+    if (*current->code == code)
+        return current->symb;
+    else
+        return NULL;
 }
