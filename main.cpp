@@ -67,26 +67,12 @@ int main() {
             phead = Add2List(phead, pnew);
         }
     }
-    //NODE* listphead = phead;
-    //PrintList(phead);
-
-    printf("\n\n");
-
     NODE* savephead = nullptr;
-    //savephead = CopyList(phead, savephead);
-    //PrintList(savephead);
-    phead = MakeTree(phead); // Tree.
-    //printf("%d    ", phead->right->freq);
-    //char code[CODE_SIZE] = { 0 };
-    //string code;
+    phead = MakeTree(phead); // Tree
 
     MakeCodes(phead);
-    //PrintTree(phead);
-    //cout << "ok";
-
 
     fseek(fr, 0, SEEK_SET);
-    //char* bitstring = (char*)malloc(1000 * length * sizeof(char));
     string bitstring = string();
     char chh;
     NODE* listphead;
@@ -94,20 +80,14 @@ int main() {
     {
             bitstring += *Symb_code(phead, chh);
     }
-    //cout << "\n" << bitstring << "\n";
     fclose(fr);
-    //string str;
 
 
     int count = bitstring.length() / BIT8;
     cout << bitstring.length()<< "\n";
-    //printf("%d", bitstring.length());
     int tail = bitstring.length() % BIT8;
-    //printf("%d", tail);
     int len = count + 1;
     BIT2CHAR symb;
-    /*char* bits = (char*)malloc(8 * sizeof(char));
-    char* res = (char*)malloc(len * sizeof(char));*/
     FILE* fw = fopen("from_h.txt", "wb");
     for (int i = 0; i < count; ++i)
     {
@@ -119,10 +99,8 @@ int main() {
         symb.mbit.b6 = (unsigned int)bitstring[i * BIT8 + 5];
         symb.mbit.b7 = (unsigned int)bitstring[i * BIT8 + 6];
         symb.mbit.b8 = (unsigned int)bitstring[i * BIT8 + 7];
-       // printf("%c", symb.symb);
         fputc(symb.symb, fw);
     }
-    //printf(res);
 
     char arr[8];
     if (tail != 0)
@@ -130,16 +108,13 @@ int main() {
         for (int i = 0; i < (8 - tail); i++)
         {
             arr[i] = '0';
-            //printf("%c", arr[i]);
         }
         for (int i = (8 - tail); i < 8; i++)
         {
             arr[i] = bitstring[count * BIT8 + i - 8 + tail];
-            //printf("%c", arr[i]);
         }
 
     }
-    //printf("\n");
     symb.mbit.b1 = arr[0];
     symb.mbit.b2 = arr[1];
     symb.mbit.b3 = arr[2];
@@ -149,25 +124,28 @@ int main() {
     symb.mbit.b7 = arr[6];
     symb.mbit.b8 = arr[7];
     fputc(symb.symb, fw);
-    //printf("%c", symb.symb);
-    printf("\n");
-    //fclose(fr);
     fclose(fw);
 
 
     //unpacking
     FILE* fr1 = fopen("from_h.txt", "rb");
     FILE* fw1 = fopen("to.txt", "wb");
+    fseek(fr1, 0L, SEEK_END);
+    long length3 = ftell(fr);
+    fseek(fr1, 0, SEEK_SET);
+    int index2 = 0;
     if (!fr1)
     {
         exit(15);
     }
     string code_new;
-    char chh1;
     BIT2CHAR symb1;
-    while ((chh1 = fgetc(fr1)) != EOF)
+    int l = 1;
+    while (l <= length3)
     {
-        symb1.symb = chh1;
+        symb1.symb = fgetc(fr1);
+        index2++;
+        l++;
         code_new.push_back((char)(((int)'0')+symb1.mbit.b1));
         code_new.push_back((char)(((int)'0')+symb1.mbit.b2));
         code_new.push_back((char)(((int)'0')+symb1.mbit.b3));
@@ -177,32 +155,28 @@ int main() {
         code_new.push_back((char)(((int)'0')+symb1.mbit.b7));
         code_new.push_back((char)(((int)'0')+symb1.mbit.b8));
     }
-    //cout << code_new << "\n";
+
     int i = 0;
     int length1 = code_new.length();
-    cout << length1;
     string cd;
     char symbol;
-    int counti;
+    int counti = 0;
     while (i < length1)
     {
         if ((tail != 0) && (i >= (length1 - 8)) && (i < (length1 - tail)))
         {
             i++;
-            //cout << 1;
             continue;
         }
         cd.push_back(code_new[i]);
         if (symbol = Code_symb(phead, cd))
         {
-           // cout << 1;
            counti++;
            fputc(symbol, fw1);
            cd = string();
         }
         i++;
     }
-    cout <<' ' << counti;
     fclose(fr1);
     fclose(fw1);
     return 0;
